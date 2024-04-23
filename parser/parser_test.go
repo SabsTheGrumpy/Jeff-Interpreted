@@ -152,6 +152,55 @@ func TestIntegerLiteralExpressions(t *testing.T) {
 }
 
 
+func TestBoolean(t *testing.T) {
+	inputTests := []struct {
+		input string
+		expected bool
+	}{
+		{
+			"false",
+			false,
+		},
+		{
+			"true",
+			true,
+		},
+	}
+
+	for _, testCase := range inputTests {
+		lexer := lexer.New(testCase.input)
+		parser := New(lexer)
+		program := parser.ParseProgram()
+
+		checkParserErrors(t, parser)
+
+		if len(program.Statements) != 1 {
+			t.Errorf("Expected statement length to be 1 but instead was %d", len(program.Statements))
+		}
+
+		statement, ok := program.Statements[0].(*ast.ExpressionStatement)
+
+		if !ok {
+			t.Fatalf("Statement %T could not be converted to an ExpressionStatement", program.Statements[0])
+		}
+
+		exp, ok := statement.Expression.(*ast.Boolean)
+
+		if !ok {
+			t.Fatalf("Expression %T could not be converted to boolean", statement.Expression)
+		}
+
+		if exp.Value != testCase.expected {
+			t.Errorf("Expected Boolean to equal %t but was %t", testCase.expected, exp.Value)
+			return
+		}
+	}
+}
+
+
+
+
+
 // Test parsing Prefix expressions. Like negative numbers or bang operator
 func TestParsingPrefixExpression(t *testing.T) {
 	prefixTests := []struct {
@@ -280,6 +329,14 @@ func TestOperatorPrecedence(t *testing.T) {
 			"a + b * c + d / e - f",
 			"(((a + (b * c)) + (d / e)) - f)",
 		},
+		{
+			"1 + (2 + 3) + 4",
+			"((1 + (2 + 3)) + 4)",
+		},
+		{
+			"1 * (2 + 3)",
+			"(1 * (2 + 3))",
+		},
 	}
 
 
@@ -298,6 +355,7 @@ func TestOperatorPrecedence(t *testing.T) {
 	}
 
 }
+
 
 
 func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {

@@ -66,6 +66,9 @@ func New(lexer *lexer.Lexer) *Parser {
 	parser.registerPrefixFn(token.INT, parser.parseIntegerLiteral)
 	parser.registerPrefixFn(token.BANG, parser.parsePrefixExpression)
 	parser.registerPrefixFn(token.MINUS, parser.parsePrefixExpression)
+	parser.registerPrefixFn(token.TRUE, parser.parseBoolean)
+	parser.registerPrefixFn(token.FALSE, parser.parseBoolean)
+	parser.registerPrefixFn(token.LPAREN, parser.parseGroupedExpression)
 
 	// Sets infix parsing functions based on the token
 	parser.infixParseFns = make(map[token.TokenType]infixParseFn)
@@ -245,6 +248,23 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	expresion.Right = p.parseExpression(precedence)
 
 	return expresion
+}
+
+
+func (p *Parser) parseBoolean() ast.Expression {
+	return &ast.Boolean{Token: p.currentToken, Value: p.currentToken.Type == token.TRUE}
+}
+
+func (p *Parser) parseGroupedExpression() ast.Expression {
+	p.nextToken()
+
+	exp := p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	return exp
 }
 
 func (p *Parser) expectPeek(tokenType token.TokenType) bool {
