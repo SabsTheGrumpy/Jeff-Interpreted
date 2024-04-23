@@ -33,7 +33,6 @@ var precedences = map[token.TokenType]int {
 
 }
 
-
 type prefixParseFn func() ast.Expression
 
 type infixParseFn func(ast.Expression) ast.Expression
@@ -69,6 +68,7 @@ func New(lexer *lexer.Lexer) *Parser {
 	parser.registerPrefixFn(token.TRUE, parser.parseBoolean)
 	parser.registerPrefixFn(token.FALSE, parser.parseBoolean)
 	parser.registerPrefixFn(token.LPAREN, parser.parseGroupedExpression)
+	parser.registerPrefixFn(token.IF, parser.parseIfStatement)
 
 	// Sets infix parsing functions based on the token
 	parser.infixParseFns = make(map[token.TokenType]infixParseFn)
@@ -118,6 +118,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 
 // parseStatement parses statements based on the keyword
+// if the current token doesn't match a keyword then parse as expression
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.currentToken.Type {
 	case token.LET:
@@ -267,6 +268,69 @@ func (p *Parser) parseGroupedExpression() ast.Expression {
 	return exp
 }
 
+
+func (p *Parser) parseIfStatement() ast.Expression {
+	expression := &ast.IfExpression{
+		Token: p.currentToken,
+	}
+
+	
+	// Check for (
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+
+	// Move token and parse the condition
+	p.nextToken()
+	expression.Condition = p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+	// parse consequence
+	expression.Consequence = p.parseBlockStatement()
+
+	// if else statement exists, parse that block as well
+	if p.peekToken.Type == token.ELSE {
+		p.nextToken()
+
+		if !p.expectPeek(token.LBRACE) {
+			return nil
+		}
+
+		expression.Alternative = p.parseBlockStatement()
+	}
+
+	return expression
+
+}
+
+
+func (p *Parser) parseBlockStatement() *ast.BlockStatement {
+	block := &ast.BlockStatement{
+		Token: p.currentToken,
+	}
+
+	block.Statements = []ast.Statement{}
+
+	p.nextToken()
+
+	// While still in block, add statements to the statement slice
+	for p.currentToken.Type != token.RBRACE && p.currentToken.Type != token.EOF {
+		statement := p.parseStatement()
+		if statement != nil {
+			block.Statements = append(block.Statements, statement)
+		}
+		p.nextToken()
+	}
+
+	return block
+}
+
 func (p *Parser) expectPeek(tokenType token.TokenType) bool {
 	if p.peekToken.Type == tokenType {
 		p.nextToken()
@@ -283,7 +347,7 @@ func (p *Parser) expectPeek(tokenType token.TokenType) bool {
 // }
 
 
-
+// peekError writes error message to errors regarding tokType not matching the peekToken type
 func (p *Parser) peekError(tokType token.TokenType) {
 	msg := fmt.Sprintf("expected next token to be %s, got %s instead!", tokType, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
@@ -303,6 +367,9 @@ func (p *Parser) registerInfixFn(tokenType token.TokenType, fn infixParseFn) {
 	p.infixParseFns[tokenType] = fn
 }
 
+
+// peekPrecedence returns the precedence of the peekToken.
+// if no precedence is found for the token then default to lowest
 func (p *Parser) peekPrecedence() int {
 	if prec, ok := precedences[p.peekToken.Type]; ok {
 		return prec
