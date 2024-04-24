@@ -1,8 +1,8 @@
 package lexer
 
 import (
+	"jeff/token"
 	"testing"
-	"monkey/token"
 )
 
 func TestNextToken(t *testing.T) {
@@ -23,8 +23,8 @@ if(x != 3)
 
 `
 
-	tests := []struct{
-		expectedType token.TokenType
+	tests := []struct {
+		expectedType    token.TokenType
 		expectedLiteral string
 	}{
 		{token.LET, "let"},

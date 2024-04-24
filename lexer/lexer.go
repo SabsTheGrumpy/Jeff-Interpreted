@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"monkey/token"
+	"jeff/token"
 )
 
 // Lexer. Converts characters to tokens
@@ -31,11 +31,10 @@ func (l *Lexer) readChar() {
 	l.readPosition += 1
 }
 
-
 // newToken creates a new token of the given type and character
 func newToken(tokenType token.TokenType, character byte) token.Token {
 	return token.Token{
-		Type: tokenType,
+		Type:    tokenType,
 		Literal: string(character),
 	}
 }
@@ -75,7 +74,7 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			t = newToken(token.ASSIGN, l.character)
 		}
-		
+
 	case '+':
 		t = newToken(token.PLUS, l.character)
 	case '-':
@@ -87,7 +86,7 @@ func (l *Lexer) NextToken() token.Token {
 			t = token.Token{Type: token.NOT_EQUALS, Literal: string(currentChar) + string(l.character)}
 		} else {
 			t = newToken(token.BANG, l.character)
-		} 
+		}
 	case '*':
 		t = newToken(token.ASTERIX, l.character)
 	case '/':
@@ -132,13 +131,11 @@ func (l *Lexer) NextToken() token.Token {
 
 }
 
-
 func (l *Lexer) skipWhitespace() {
 	for l.character == ' ' || l.character == '\t' || l.character == '\n' || l.character == '\r' {
 		l.readChar()
 	}
 }
-
 
 func (l *Lexer) peekChar() byte {
 	if l.readPosition < len(l.input) {
@@ -148,8 +145,7 @@ func (l *Lexer) peekChar() byte {
 	}
 }
 
-
-func isLetter(characer byte) bool{
+func isLetter(characer byte) bool {
 	return 'a' <= characer && characer <= 'z' || 'A' <= characer && characer <= 'Z' || characer == '_'
 }
 

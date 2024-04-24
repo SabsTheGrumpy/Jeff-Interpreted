@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"monkey/lexer"
-	"monkey/parser"
+	"jeff/lexer"
+	"jeff/parser"
 )
 
 const PROMPT = ">>"
@@ -40,6 +40,6 @@ func Start(reader io.Reader, writer io.Writer) {
 
 func printParserErrors(out io.Writer, errors []string) {
 	for _, msg := range errors {
-		io.WriteString(out, msg + "\n")
+		io.WriteString(out, msg+"\n")
 	}
 }
