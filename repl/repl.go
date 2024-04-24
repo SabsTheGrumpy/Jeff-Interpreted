@@ -3,9 +3,9 @@ package repl
 import (
 	"bufio"
 	"fmt"
-	"monkey/token"
 	"io"
 	"monkey/lexer"
+	"monkey/parser"
 )
 
 const PROMPT = ">>"
@@ -21,11 +21,25 @@ func Start(reader io.Reader, writer io.Writer) {
 		}
 
 		line := scanner.Text()
-		lexer := lexer.New(line)
-
-		for tok := lexer.NextToken(); tok.Type != token.EOF; tok = lexer.NextToken() {
-			fmt.Fprintf(writer, "%+v\n", tok)
+		if line == "exit" {
+			return
 		}
-	}
+		lexer := lexer.New(line)
+		parser := parser.New(lexer)
+		program := parser.ParseProgram()
 
+		if len(parser.Errors()) != 0 {
+			printParserErrors(writer, parser.Errors())
+			continue
+		}
+
+		io.WriteString(writer, program.String())
+		io.WriteString(writer, "\n")
+	}
+}
+
+func printParserErrors(out io.Writer, errors []string) {
+	for _, msg := range errors {
+		io.WriteString(out, msg + "\n")
+	}
 }
