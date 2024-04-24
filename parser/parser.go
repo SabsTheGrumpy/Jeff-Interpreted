@@ -30,7 +30,7 @@ var precedences = map[token.TokenType]int {
 	token.MINUS: SUM,
 	token.SLASH: PRODUCT,
 	token.ASTERIX: PRODUCT,
-
+	token.LPAREN: CALL,
 }
 
 type prefixParseFn func() ast.Expression
@@ -69,6 +69,7 @@ func New(lexer *lexer.Lexer) *Parser {
 	parser.registerPrefixFn(token.FALSE, parser.parseBoolean)
 	parser.registerPrefixFn(token.LPAREN, parser.parseGroupedExpression)
 	parser.registerPrefixFn(token.IF, parser.parseIfStatement)
+	parser.registerPrefixFn(token.FUNCTION, parser.parseFunctionLiteral)
 
 	// Sets infix parsing functions based on the token
 	parser.infixParseFns = make(map[token.TokenType]infixParseFn)
@@ -80,6 +81,10 @@ func New(lexer *lexer.Lexer) *Parser {
 	parser.registerInfixFn(token.NOT_EQUALS, parser.parseInfixExpression)
 	parser.registerInfixFn(token.LT, parser.parseInfixExpression)
 	parser.registerInfixFn(token.GT, parser.parseInfixExpression)
+
+	// This is infix since ( in the token between ident/lit and the arguements list.
+	// i.e add(2,2)
+	parser.registerInfixFn(token.LPAREN, parser.parseCallExpression)
 
 	return parser
 
@@ -145,7 +150,11 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil 
 	}
 
-	for p.currentToken.Type != token.SEMICOLON {
+	p.nextToken()
+
+	statement.Value = p.parseExpression(LOWEST)
+
+	if p.peekToken.Type == token.SEMICOLON {
 		p.nextToken()
 	}
 
@@ -158,12 +167,13 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 
 	p.nextToken()
 
-	for p.currentToken.Type != token.SEMICOLON {
+	statement.ReturnValue = p.parseExpression(LOWEST)
+
+	if p.peekToken.Type == token.SEMICOLON {
 		p.nextToken()
 	}
 
 	return statement
-
 }
 
 
@@ -306,6 +316,100 @@ func (p *Parser) parseIfStatement() ast.Expression {
 	}
 
 	return expression
+
+}
+
+// parseFunctionLiterl parses functions. e.g.
+// fn (x,y) { return x + y }
+func (p *Parser) parseFunctionLiteral() ast.Expression {
+	lit := &ast.FunctionLiteral{Token: p.currentToken}
+
+	// Check we have the first paren for param
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+
+	lit.Parameters = p.parseFunctionParameters()
+
+	// Check we have the { for the body
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+
+	lit.Body = p.parseBlockStatement()
+
+	return lit
+}
+
+
+func (p *Parser) parseFunctionParameters() []*ast.Indentifier {
+	identifiers := []*ast.Indentifier{}
+
+	// Handle empty parameter list
+	if p.peekToken.Type == token.RPAREN {
+		p.nextToken()
+		return identifiers
+	}
+
+	p.nextToken()
+
+	// Grab first param
+	ident := &ast.Indentifier{Token: p.currentToken, Value: p.currentToken.Literal}
+
+	identifiers = append(identifiers, ident)
+
+	// while there are more params, keep grabbing them
+	for p.peekToken.Type == token.COMMA {
+		p.nextToken() // now current token is comma
+		p.nextToken()
+		ident := &ast.Indentifier{Token: p.currentToken, Value: p.currentToken.Literal}
+		identifiers = append(identifiers, ident)
+	}
+
+	// Check that we have a closed paren
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	return identifiers
+}
+
+//parseCallExpression parsed function calls
+//these can be ident or literals. 
+// add(2,2) or fn(x,y) { return x + y }(2,2)
+// where you have ident 'add' or literal 'fn(x, y){ return x + y }
+// and then the call statement (2,2)
+func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
+	exp := &ast.CallExpression{Token: p.currentToken, Function: function}
+	exp.Arguments = p.parseCallArguments()
+	return exp
+}
+
+func (p *Parser) parseCallArguments() []ast.Expression {
+
+	args := []ast.Expression{}
+
+	// Check for empty arg list. 
+	if p.peekToken.Type == token.RPAREN {
+		p.nextToken()
+		return args
+	}
+
+	p.nextToken()
+	// Parse first arg, which is an expression
+	args = append(args, p.parseExpression(LOWEST))
+
+	for p.peekToken.Type == token.COMMA {
+		p.nextToken()
+		p.nextToken()
+		args = append(args,p.parseExpression(LOWEST))
+	}
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	return args
 
 }
 
