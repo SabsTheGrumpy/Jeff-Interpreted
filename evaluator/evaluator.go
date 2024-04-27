@@ -61,13 +61,30 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 	switch {
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalIntegerInfixExpression(operator, left, right)
+	case left.Type() == object.BOOLEAN_OBJ && right.Type() == object.BOOLEAN_OBJ:
+		return evalBooleanInfixExpression(operator, left, right)
 	default:
 		return NULL
 	}
 }
 
+func evalBooleanInfixExpression(operator string, left, right object.Object) object.Object {
+
+	// Note for boolean object comparison, we can use the actual objects because all TRUE and FALSE objects
+	// are the same in Jeff (same memory location as well)
+	switch operator {
+	case "==":
+		return nativeBoolToBooleanObject( left == right)
+	case "!=":
+		return nativeBoolToBooleanObject( left != right)
+	default:
+		return NULL
+	}
+}
 
 func evalIntegerInfixExpression(operator string, left, right object.Object) object.Object {
+	// Need to unpack values for integers because
+	// the object.Integers are not the same even if their values are
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
 
