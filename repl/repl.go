@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"jeff/evaluator"
 	"jeff/lexer"
 	"jeff/parser"
 )
@@ -33,8 +34,11 @@ func Start(reader io.Reader, writer io.Writer) {
 			continue
 		}
 
-		io.WriteString(writer, program.String())
-		io.WriteString(writer, "\n")
+		evaluated := evaluator.Eval(program)
+		if evaluated != nil {
+			io.WriteString(writer, evaluated.Inspect())
+			io.WriteString(writer, "\n")
+		}
 	}
 }
 
