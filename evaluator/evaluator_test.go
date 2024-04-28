@@ -226,6 +226,56 @@ func TestReturnStatements(t *testing.T) {
 
 }
 
+
+func TestErrorHandling(t *testing.T) {
+	tests := []struct {
+		input string
+		expectedMessage string
+	}{
+		{"5 + true", "type mismatch: INTEGER + BOOLEAN"},
+		{"5 + true; 5;", "type mismatch: INTEGER + BOOLEAN"},
+		{"-true", "unknown operator: -BOOLEAN"},
+		{"true + false", "unknown operator: BOOLEAN + BOOLEAN"},
+		{"5; true + false; 5;", "unknown operator: BOOLEAN + BOOLEAN"},
+		{"foobar", "identifier not found: foobar"},
+	}
+
+
+
+	for _, testCase := range tests {
+		evaluated := testEval(testCase.input)
+
+		errObj, ok := evaluated.(*object.ERROR)
+		if !ok {
+			t.Errorf("no error object returned. Got %T (%+v)", evaluated, evaluated)
+			continue
+		}
+
+		if errObj.Message != testCase.expectedMessage {
+			t.Errorf("Unexpected message. Expected %s but got %s", testCase.expectedMessage, errObj.Message)
+		}
+
+
+	}
+}
+
+func TestLetStatements(t *testing.T) {
+
+	tests := []struct{
+		input string
+		expected int64
+	}{
+		{"let x = 5; x", 5},
+		{"let a = 5 * 5;a;", 25},
+		{"let a = 5; let b = 5; let c = a * b; c;", 25},
+	}
+
+	for _, testCase := range tests {
+		testIntegerObject(t, testEval(testCase.input), testCase.expected)
+	}
+
+}
+
 func testNullObject(t *testing.T, obj object.Object) bool {
 
 	if obj != NULL {
@@ -257,8 +307,9 @@ func testEval(input string) object.Object {
 	lexer := lexer.New(input)
 	parser := parser.New(lexer)
 	program := parser.ParseProgram()
+	env := object.NewEnvironment()
 
-	return Eval(program)
+	return Eval(program, env)
 }
 
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
