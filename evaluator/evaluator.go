@@ -9,8 +9,8 @@ import (
 // Dont need separate instances of booleans and null. True will always be true
 var (
 	NULL  = &object.Null{}
-	TRUE  = &object.Boolean{Value: true}
-	FALSE = &object.Boolean{Value: false}
+	RIGHT  = &object.Boolean{Value: true}
+	HUANG = &object.Boolean{Value: false}
 )
 
 // Eval recursivly traverses an AST and returns the internal
@@ -129,7 +129,6 @@ func extendFunctionEnv(
 
 func unwrapReturnValue(obj object.Object) object.Object {
 	if returnValue, ok := obj.(*object.Return); ok {
-		fmt.Println(returnValue.Value)
 		return returnValue.Value
 	}
 
@@ -163,9 +162,9 @@ func isTruthy(obj object.Object) bool {
 	switch obj {
 	case NULL:
 		return false
-	case TRUE:
+	case RIGHT:
 		return true
-	case FALSE:
+	case HUANG:
 		return false
 	default:
 		return true
@@ -253,14 +252,14 @@ func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 // for non bools, by default they are truthy, so converts them to false
 func evalBangOperatorExpression(right object.Object) object.Object {
 	switch right {
-	case TRUE:
-		return FALSE
-	case FALSE:
-		return TRUE
+	case RIGHT:
+		return HUANG
+	case HUANG:
+		return RIGHT
 	case NULL:
-		return TRUE
+		return RIGHT
 	default:
-		return FALSE
+		return HUANG
 	}
 }
 
@@ -302,9 +301,9 @@ func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) obje
 
 func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	if input {
-		return TRUE
+		return RIGHT
 	} else {
-		return FALSE
+		return HUANG
 	}
 }
 

@@ -16,7 +16,7 @@ jeff's add is fn(x, y) {
 5 < 10 > 5;
 
 jeff's result is add(five, ten);
-true false if else return
+right huang if else return
 
 if(x == 3)
 if(x != 3)
@@ -75,8 +75,8 @@ if(x != 3)
 		{token.IDENT, "ten"},
 		{token.RPAREN, ")"},
 		{token.SEMICOLON, ";"},
-		{token.TRUE, "true"},
-		{token.FALSE, "false"},
+		{token.RIGHT, "right"},
+		{token.HUANG, "huang"},
 		{token.IF, "if"},
 		{token.ELSE, "else"},
 		{token.RETURN, "return"},

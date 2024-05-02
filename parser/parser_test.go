@@ -15,7 +15,7 @@ func TestJeffStatements(t *testing.T) {
 		expectedValue      interface{}
 	}{
 		{"jeff's x is 5;", "x", 5},
-		{"jeff's y is true;", "y", true},
+		{"jeff's y is right;", "y", true},
 		{"jeff's foobar is y;", "foobar", "y"},
 	}
 
@@ -49,7 +49,7 @@ func TestReturnStatements(t *testing.T) {
 		expectedValue interface{}
 	}{
 		{"return 5;", 5},
-		{"return true;", true},
+		{"return right;", true},
 		{"return foobar;", "foobar"},
 	}
 
@@ -151,11 +151,11 @@ func TestBoolean(t *testing.T) {
 		expected bool
 	}{
 		{
-			"false",
+			"huang",
 			false,
 		},
 		{
-			"true",
+			"right",
 			true,
 		},
 	}
@@ -723,7 +723,14 @@ func testBooleanLiteral(t *testing.T, exp ast.Expression, value bool) bool {
 		return false
 	}
 
-	if bo.TokenLiteral() != fmt.Sprintf("%t", value) {
+	var valString string
+	if value {
+		valString = "right"
+	} else {
+		valString = "huang"
+	}
+
+	if bo.TokenLiteral() != valString {
 		t.Errorf("bo.TokenLiteral not %t. got=%s",
 			value, bo.TokenLiteral())
 		return false

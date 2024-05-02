@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"jeff/lexer"
 	"jeff/object"
 	"jeff/parser"
@@ -65,11 +66,11 @@ func TestEvalBooleanExpression(t *testing.T) {
 		expected bool
 	}{
 		{
-			"true",
+			"right",
 			true,
 		},
 		{
-			"false",
+			"huang",
 			false,
 		},
 		{
@@ -105,39 +106,39 @@ func TestEvalBooleanExpression(t *testing.T) {
 			false,
 		},
 		{
-			"true == true",
+			"right == right",
 			true,
 		},
 		{
-			"true == false",
+			"right == huang",
 			false,
 		},
 		{
-			"true != true",
+			"right != right",
 			false,
 		},
 		{
-			"true != false",
+			"right != huang",
 			true,
 		},
 		{
-			"false == false",
+			"huang == huang",
 			true,
 		},
 		{
-			"(1 < 4) == true",
+			"(1 < 4) == right",
 			true,
 		},
 		{
-			"(1 > 4) == true",
+			"(1 > 4) == right",
 			false,
 		},
 		{
-			"(1 < 4) == false",
+			"(1 < 4) == huang",
 			false,
 		},
 		{
-			"(1 > 4) == false",
+			"(1 > 4) == huang",
 			true,
 		},
 
@@ -160,11 +161,11 @@ func TestBangOperator(t *testing.T) {
 		expected bool
 	}{
 		{
-			"!true",
+			"!right",
 			false,
 		},
 		{
-			"!false",
+			"!huang",
 			true,
 		},
 		{
@@ -188,8 +189,8 @@ func TestIfElseExpression(t *testing.T) {
 		input string
 		expected interface{}
 	}{
-		{"if (true) { 10 }", 10},
-		{"if (false) { 10 }", nil},
+		{"if (right) { 10 }", 10},
+		{"if (huang) { 10 }", nil},
 		{"if (1) { 10 }", 10},
 		{"if( 1 > 2) {10} else {20}", 20},
 		{"if( 2 > 1) {10} else {20}", 10},
@@ -232,11 +233,11 @@ func TestErrorHandling(t *testing.T) {
 		input string
 		expectedMessage string
 	}{
-		{"5 + true", "type mismatch: INTEGER + BOOLEAN"},
-		{"5 + true; 5;", "type mismatch: INTEGER + BOOLEAN"},
-		{"-true", "unknown operator: -BOOLEAN"},
-		{"true + false", "unknown operator: BOOLEAN + BOOLEAN"},
-		{"5; true + false; 5;", "unknown operator: BOOLEAN + BOOLEAN"},
+		{"5 + right", "type mismatch: INTEGER + BOOLEAN"},
+		{"5 + right; 5;", "type mismatch: INTEGER + BOOLEAN"},
+		{"-right", "unknown operator: -BOOLEAN"},
+		{"right + huang", "unknown operator: BOOLEAN + BOOLEAN"},
+		{"5; right + huang; 5;", "unknown operator: BOOLEAN + BOOLEAN"},
 		{"foobar", "identifier not found: foobar"},
 	}
 

@@ -45,7 +45,11 @@ type Boolean struct {
 }
 
 func (b *Boolean) Inspect() string {
-	return fmt.Sprintf("%t", b.Value)
+	if b.Value {
+		return "right"
+	} else {
+		return "huang"
+	}
 }
 
 func (b *Boolean) Type() ObjectType {

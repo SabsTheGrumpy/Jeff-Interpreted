@@ -28,8 +28,8 @@ const (
 
 	FUNCTION = "FUNCTION"
 	JEFFS    = "JEFFS"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
+	RIGHT    = "RIGHT"
+	HUANG    = "HUANG"
 	IF       = "IF"
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
@@ -44,13 +44,13 @@ type Token struct {
 
 var keywords = map[string]TokenType{
 	"fn":     FUNCTION,
-	"jeff's":    JEFFS,
-	"true":   TRUE,
-	"false":  FALSE,
+	"jeff's": JEFFS,
+	"right":   RIGHT,
+	"huang":  HUANG,
 	"if":     IF,
 	"else":   ELSE,
 	"return": RETURN,
-	"is": ASSIGN,
+	"is":     ASSIGN,
 }
 
 func LookupIdentifier(identifier string) TokenType {
