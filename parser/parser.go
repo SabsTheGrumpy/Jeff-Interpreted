@@ -124,8 +124,8 @@ func (p *Parser) ParseProgram() *ast.Program {
 // if the current token doesn't match a keyword then parse as expression
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.currentToken.Type {
-	case token.LET:
-		return p.parseLetStatement()
+	case token.JEFFS:
+		return p.parseJeffStatement()
 	case token.RETURN:
 		return p.parseReturnStatement()
 	default:
@@ -133,9 +133,9 @@ func (p *Parser) parseStatement() ast.Statement {
 	}
 }
 
-func (p *Parser) parseLetStatement() *ast.LetStatement {
+func (p *Parser) parseJeffStatement() *ast.JeffStatement {
 
-	statement := &ast.LetStatement{Token: p.currentToken}
+	statement := &ast.JeffStatement{Token: p.currentToken}
 
 	if !p.expectPeek(token.IDENT) {
 		return nil

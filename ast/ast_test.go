@@ -11,8 +11,8 @@ func TestString(t *testing.T) {
 
 	program := &Program{
 		Statements: []Statement{
-			&LetStatement{
-				Token: token.Token{Type: token.LET, Literal: "let"},
+			&JeffStatement{
+				Token: token.Token{Type: token.JEFFS, Literal: "let"},
 				Name: &Indentifier{
 					Token: token.Token{Type: token.IDENT, Literal: "myVar"},
 					Value: "myVar",

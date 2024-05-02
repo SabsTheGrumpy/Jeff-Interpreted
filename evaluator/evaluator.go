@@ -8,13 +8,13 @@ import (
 
 // Dont need separate instances of booleans and null. True will always be true
 var (
-	NULL = &object.Null{}
-	TRUE = &object.Boolean{Value: true}
+	NULL  = &object.Null{}
+	TRUE  = &object.Boolean{Value: true}
 	FALSE = &object.Boolean{Value: false}
 )
 
-//Eval recursivly traverses an AST and returns the internal
-//object representation of the AST node
+// Eval recursivly traverses an AST and returns the internal
+// object representation of the AST node
 func Eval(node ast.Node, env *object.Environment) object.Object {
 	switch node := node.(type) {
 
@@ -30,7 +30,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return val
 		}
 		return &object.Return{Value: val}
-	case *ast.LetStatement:
+	case *ast.JeffStatement:
 		val := Eval(node.Value, env)
 		if isError(val) {
 			return val
@@ -159,7 +159,6 @@ func evalIfExpression(ie *ast.IfExpression, env *object.Environment) object.Obje
 	}
 }
 
-
 func isTruthy(obj object.Object) bool {
 	switch obj {
 	case NULL:
@@ -172,7 +171,6 @@ func isTruthy(obj object.Object) bool {
 		return true
 	}
 }
-
 
 func evalPrefixExpression(operator string, right object.Object) object.Object {
 	switch operator {
@@ -204,9 +202,9 @@ func evalBooleanInfixExpression(operator string, left, right object.Object) obje
 	// are the same in Jeff (same memory location as well)
 	switch operator {
 	case "==":
-		return nativeBoolToBooleanObject( left == right)
+		return nativeBoolToBooleanObject(left == right)
 	case "!=":
-		return nativeBoolToBooleanObject( left != right)
+		return nativeBoolToBooleanObject(left != right)
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
 	}
@@ -240,8 +238,8 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	}
 }
 
-//evalMinusPrefixOperatorExpression converts integer value of object
-//into its negative counterpart. If object is not an integer; return NULL
+// evalMinusPrefixOperatorExpression converts integer value of object
+// into its negative counterpart. If object is not an integer; return NULL
 func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 	if right.Type() != object.INTEGER_OBJ {
 		return newError("unknown operator: -%s", right.Type())
@@ -251,9 +249,8 @@ func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 	return &object.Integer{Value: -value}
 }
 
-
-//evalBangOperatorExpression converts true to false and false to true.
-//for non bools, by default they are truthy, so converts them to false
+// evalBangOperatorExpression converts true to false and false to true.
+// for non bools, by default they are truthy, so converts them to false
 func evalBangOperatorExpression(right object.Object) object.Object {
 	switch right {
 	case TRUE:
@@ -269,7 +266,6 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 
 func evalProgram(statements []ast.Statement, env *object.Environment) object.Object {
 	var result object.Object
-
 
 	for _, statement := range statements {
 		result = Eval(statement, env)
@@ -291,7 +287,7 @@ func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) obje
 
 	for _, statement := range block.Statements {
 		result = Eval(statement, env)
-		
+
 		if result != nil {
 			resultType := result.Type()
 			if resultType == object.RETURN_OBJ || resultType == object.ERROR_OBJ {
@@ -312,8 +308,7 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	}
 }
 
-
-func newError(format string, a... interface{}) *object.ERROR {
+func newError(format string, a ...interface{}) *object.ERROR {
 	return &object.ERROR{Message: fmt.Sprintf(format, a...)}
 }
 

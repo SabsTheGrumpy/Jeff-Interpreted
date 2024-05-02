@@ -1,62 +1,54 @@
 package token
 
-
 const (
-
-
 	ILLEGAL = "ILLEGAL"
-	EOF = "EOF"
+	EOF     = "EOF"
 
 	IDENT = "IDENT"
-	INT = "INT"
+	INT   = "INT"
 
-	ASSIGN = "="
-	PLUS = "+"
-	MINUS = "-"
-	BANG = "!"
-	ASTERIX = "*"
-	SLASH = "/"
-	LT = "<"
-	GT = ">"
-	EQUALS = "=="
+	ASSIGN     = "="
+	PLUS       = "+"
+	MINUS      = "-"
+	BANG       = "!"
+	ASTERIX    = "*"
+	SLASH      = "/"
+	LT         = "<"
+	GT         = ">"
+	EQUALS     = "=="
 	NOT_EQUALS = "!="
 
-	COMMA = ","
+	COMMA     = ","
 	SEMICOLON = ";"
-
 
 	LPAREN = "("
 	RPAREN = ")"
 	LBRACE = "{"
 	RBRACE = "}"
 
-
-
 	FUNCTION = "FUNCTION"
-	LET = "LET"
-	TRUE = "TRUE"
-	FALSE = "FALSE"
-	IF = "IF"
-	ELSE = "ELSE"
-	RETURN = "RETURN"
-
+	JEFFS    = "JEFFS"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
-
 
 type TokenType string
 
 type Token struct {
-	Type TokenType
+	Type    TokenType
 	Literal string
 }
 
-var keywords = map[string]TokenType {
-	"fn": FUNCTION,
-	"let": LET,
-	"true": TRUE,
-	"false": FALSE,
-	"if": IF,
-	"else": ELSE,
+var keywords = map[string]TokenType{
+	"fn":     FUNCTION,
+	"jeff's":    JEFFS,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
 	"return": RETURN,
 }
 
@@ -66,4 +58,3 @@ func LookupIdentifier(identifier string) TokenType {
 	}
 	return IDENT
 }
-

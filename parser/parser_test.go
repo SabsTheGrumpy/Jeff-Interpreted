@@ -7,16 +7,16 @@ import (
 	"testing"
 )
 
-// Test parsing let statement i.e. let "x = 5;"
-func TestLetStatements(t *testing.T) {
+// Test parsing jeff's statement i.e. jeff's "x = 5;"
+func TestJeffStatements(t *testing.T) {
 	tests := []struct {
 		input              string
 		expectedIdentifier string
 		expectedValue      interface{}
 	}{
-		{"let x = 5;", "x", 5},
-		{"let y = true;", "y", true},
-		{"let foobar = y;", "foobar", "y"},
+		{"jeff's x = 5;", "x", 5},
+		{"jeff's y = true;", "y", true},
+		{"jeff's foobar = y;", "foobar", "y"},
 	}
 
 	for _, tt := range tests {
@@ -31,11 +31,11 @@ func TestLetStatements(t *testing.T) {
 		}
 
 		stmt := program.Statements[0]
-		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
+		if !testJeffStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
 
-		val := stmt.(*ast.LetStatement).Value
+		val := stmt.(*ast.JeffStatement).Value
 		if !testLiteralExpression(t, val, tt.expectedValue) {
 			return
 		}
@@ -648,26 +648,26 @@ func checkParserErrors(t *testing.T, p *Parser) {
 	t.FailNow()
 }
 
-func testLetStatement(t *testing.T, statement ast.Statement, name string) bool {
+func testJeffStatement(t *testing.T, statement ast.Statement, name string) bool {
 
-	if statement.TokenLiteral() != "let" {
-		t.Errorf("TokenLiteral not Let, got=%s", statement.TokenLiteral())
+	if statement.TokenLiteral() != "jeff's" {
+		t.Errorf("TokenLiteral not jeff's, got=%s", statement.TokenLiteral())
 		return false
 	}
 
-	letStatement, ok := statement.(*ast.LetStatement)
+	jeffStatement, ok := statement.(*ast.JeffStatement)
 	if !ok {
-		t.Errorf("Statement not LetStatement, got=%T", statement)
+		t.Errorf("Statement not JeffStatement, got=%T", statement)
 		return false
 	}
 
-	if letStatement.Name.Value != name {
-		t.Errorf("Statement name does not match. Expected %s but got %s", name, letStatement.Name.Value)
+	if jeffStatement.Name.Value != name {
+		t.Errorf("Statement name does not match. Expected %s but got %s", name, jeffStatement.Name.Value)
 		return false
 	}
 
-	if letStatement.Name.TokenLiteral() != name {
-		t.Errorf("Statement Token does not match. Expected %s but got %s", name, letStatement.TokenLiteral())
+	if jeffStatement.Name.TokenLiteral() != name {
+		t.Errorf("Statement Token does not match. Expected %s but got %s", name, jeffStatement.TokenLiteral())
 		return false
 	}
 

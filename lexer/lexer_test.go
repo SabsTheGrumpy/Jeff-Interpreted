@@ -6,16 +6,16 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
-	input := `let five = 5;
-let ten = 10;
+	input := `jeff's five = 5;
+jeff's ten = 10;
 
-let add = fn(x, y) {
+jeff's add = fn(x, y) {
 	x + y;
 };
 !-/*5;
 5 < 10 > 5;
 
-let result = add(five, ten);
+jeff's result = add(five, ten);
 true false if else return
 
 if(x == 3)
@@ -27,17 +27,17 @@ if(x != 3)
 		expectedType    token.TokenType
 		expectedLiteral string
 	}{
-		{token.LET, "let"},
+		{token.JEFFS, "jeff's"},
 		{token.IDENT, "five"},
 		{token.ASSIGN, "="},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
-		{token.LET, "let"},
+		{token.JEFFS, "jeff's"},
 		{token.IDENT, "ten"},
 		{token.ASSIGN, "="},
 		{token.INT, "10"},
 		{token.SEMICOLON, ";"},
-		{token.LET, "let"},
+		{token.JEFFS, "jeff's"},
 		{token.IDENT, "add"},
 		{token.ASSIGN, "="},
 		{token.FUNCTION, "fn"},
@@ -65,7 +65,7 @@ if(x != 3)
 		{token.GT, ">"},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
-		{token.LET, "let"},
+		{token.JEFFS, "jeff's"},
 		{token.IDENT, "result"},
 		{token.ASSIGN, "="},
 		{token.IDENT, "add"},

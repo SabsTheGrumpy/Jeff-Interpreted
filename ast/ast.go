@@ -43,19 +43,19 @@ func (p *Program) String() string {
 	return out.String()
 }
 
-type LetStatement struct {
+type JeffStatement struct {
 	Token token.Token
 	Name  *Indentifier
 	Value Expression
 }
 
-func (l *LetStatement) statementNode() {}
+func (l *JeffStatement) statementNode() {}
 
-func (l *LetStatement) TokenLiteral() string {
+func (l *JeffStatement) TokenLiteral() string {
 	return l.Token.Literal
 }
 
-func (l *LetStatement) String() string {
+func (l *JeffStatement) String() string {
 
 	var out bytes.Buffer
 
