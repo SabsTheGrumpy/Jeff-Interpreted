@@ -14,9 +14,9 @@ func TestJeffStatements(t *testing.T) {
 		expectedIdentifier string
 		expectedValue      interface{}
 	}{
-		{"jeff's x = 5;", "x", 5},
-		{"jeff's y = true;", "y", true},
-		{"jeff's foobar = y;", "foobar", "y"},
+		{"jeff's x is 5;", "x", 5},
+		{"jeff's y is true;", "y", true},
+		{"jeff's foobar is y;", "foobar", "y"},
 	}
 
 	for _, tt := range tests {

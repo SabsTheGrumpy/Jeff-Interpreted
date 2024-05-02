@@ -7,7 +7,7 @@ const (
 	IDENT = "IDENT"
 	INT   = "INT"
 
-	ASSIGN     = "="
+	ASSIGN     = "is"
 	PLUS       = "+"
 	MINUS      = "-"
 	BANG       = "!"
@@ -50,6 +50,7 @@ var keywords = map[string]TokenType{
 	"if":     IF,
 	"else":   ELSE,
 	"return": RETURN,
+	"is": ASSIGN,
 }
 
 func LookupIdentifier(identifier string) TokenType {

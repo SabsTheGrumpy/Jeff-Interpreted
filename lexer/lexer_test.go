@@ -6,16 +6,16 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
-	input := `jeff's five = 5;
-jeff's ten = 10;
+	input := `jeff's five is 5;
+jeff's ten is 10;
 
-jeff's add = fn(x, y) {
+jeff's add is fn(x, y) {
 	x + y;
 };
 !-/*5;
 5 < 10 > 5;
 
-jeff's result = add(five, ten);
+jeff's result is add(five, ten);
 true false if else return
 
 if(x == 3)
@@ -29,17 +29,17 @@ if(x != 3)
 	}{
 		{token.JEFFS, "jeff's"},
 		{token.IDENT, "five"},
-		{token.ASSIGN, "="},
+		{token.ASSIGN, "is"},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
 		{token.JEFFS, "jeff's"},
 		{token.IDENT, "ten"},
-		{token.ASSIGN, "="},
+		{token.ASSIGN, "is"},
 		{token.INT, "10"},
 		{token.SEMICOLON, ";"},
 		{token.JEFFS, "jeff's"},
 		{token.IDENT, "add"},
-		{token.ASSIGN, "="},
+		{token.ASSIGN, "is"},
 		{token.FUNCTION, "fn"},
 		{token.LPAREN, "("},
 		{token.IDENT, "x"},
@@ -67,7 +67,7 @@ if(x != 3)
 		{token.SEMICOLON, ";"},
 		{token.JEFFS, "jeff's"},
 		{token.IDENT, "result"},
-		{token.ASSIGN, "="},
+		{token.ASSIGN, "is"},
 		{token.IDENT, "add"},
 		{token.LPAREN, "("},
 		{token.IDENT, "five"},

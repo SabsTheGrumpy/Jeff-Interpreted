@@ -7,12 +7,12 @@ import (
 
 func TestString(t *testing.T) {
 
-	expectedString := "let myVar = anotherVar;"
+	expectedString := "jeff's myVar is anotherVar;"
 
 	program := &Program{
 		Statements: []Statement{
 			&JeffStatement{
-				Token: token.Token{Type: token.JEFFS, Literal: "let"},
+				Token: token.Token{Type: token.JEFFS, Literal: "jeff's"},
 				Name: &Indentifier{
 					Token: token.Token{Type: token.IDENT, Literal: "myVar"},
 					Value: "myVar",

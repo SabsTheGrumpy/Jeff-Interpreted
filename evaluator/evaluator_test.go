@@ -265,9 +265,9 @@ func TestJeffStatements(t *testing.T) {
 		input string
 		expected int64
 	}{
-		{"jeff's x = 5; x", 5},
-		{"jeff's a = 5 * 5;a;", 25},
-		{"jeff's a = 5; jeff's b = 5; jeff's c = a * b; c;", 25},
+		{"jeff's x is 5; x", 5},
+		{"jeff's a is 5 * 5;a;", 25},
+		{"jeff's a is 5; jeff's b is 5; jeff's c is a * b; c;", 25},
 	}
 
 	for _, testCase := range tests {
@@ -310,11 +310,11 @@ func TestFunctionApplication(t *testing.T) {
 		input string
 		expected int64
 	}{
-		{"jeff's identity = fn(x) { x; }; identity(5);", 5},
-		{"jeff's identity = fn(x) { return x; }; identity(5);", 5},
-		{"jeff's double = fn(x) { x * 2; }; double(5);", 10},
-		{"jeff's add = fn(x, y) { x + y; }; add(5, 5);", 10},
-		{"jeff's add = fn(x, y) { x + y; }; add(5 + 5, add(5, 5));", 20},
+		{"jeff's identity is fn(x) { x; }; identity(5);", 5},
+		{"jeff's identity is fn(x) { return x; }; identity(5);", 5},
+		{"jeff's double is fn(x) { x * 2; }; double(5);", 10},
+		{"jeff's add is fn(x, y) { x + y; }; add(5, 5);", 10},
+		{"jeff's add is fn(x, y) { x + y; }; add(5 + 5, add(5, 5));", 20},
 		{"fn(x) { x; }(5)", 5},
 	}
 

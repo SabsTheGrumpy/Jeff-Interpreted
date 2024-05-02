@@ -61,7 +61,7 @@ func (l *JeffStatement) String() string {
 
 	out.WriteString(l.TokenLiteral() + " ")
 	out.WriteString(l.Name.String())
-	out.WriteString(" = ")
+	out.WriteString(" is ")
 
 	if l.Value != nil {
 		out.WriteString(l.Value.String())
