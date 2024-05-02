@@ -70,6 +70,7 @@ func New(lexer *lexer.Lexer) *Parser {
 	parser.registerPrefixFn(token.LPAREN, parser.parseGroupedExpression)
 	parser.registerPrefixFn(token.IF, parser.parseIfStatement)
 	parser.registerPrefixFn(token.FUNCTION, parser.parseFunctionLiteral)
+	parser.registerPrefixFn(token.STRING, parser.parseStringLiteral)
 
 	// Sets infix parsing functions based on the token
 	parser.infixParseFns = make(map[token.TokenType]infixParseFn)
@@ -209,6 +210,10 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	}
 
 	return leftExp
+}
+
+func (p *Parser) parseStringLiteral() ast.Expression {
+	return &ast.StringLiteral{Token: p.currentToken, Value: p.currentToken.Literal}
 }
 
 func (p *Parser) parseIntegerLiteral() ast.Expression {

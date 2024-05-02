@@ -21,6 +21,8 @@ right huang if else return
 if(x == 3)
 if(x != 3)
 
+"foobar"
+"foo bar"
 `
 
 	tests := []struct {
@@ -93,6 +95,8 @@ if(x != 3)
 		{token.INT, "3"},
 		{token.RPAREN, ")"},
 		{token.EOF, ""},
+		{token.STRING, "foobar"},
+		{token.STRING, "foo bar"},
 	}
 
 	lexer := New(input)
