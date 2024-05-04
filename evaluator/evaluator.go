@@ -104,6 +104,7 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 	return result
 }
 
+// applyFunction either evaluated the function statements or calls the built in function
 func applyFunction(fn object.Object, args []object.Object) object.Object {
 
 	switch fn := fn.(type) {

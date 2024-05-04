@@ -1,5 +1,6 @@
 package token
 
+// token's used in lexer
 const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
@@ -43,6 +44,7 @@ type Token struct {
 	Literal string
 }
 
+// special words in JPL that are not variable names
 var keywords = map[string]TokenType{
 	"fn":     FUNCTION,
 	"jeff's": JEFFS,

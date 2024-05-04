@@ -134,6 +134,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	}
 }
 
+// Parse the assign statement in JPL i.e. "jeff's x = 1"
 func (p *Parser) parseJeffStatement() *ast.JeffStatement {
 
 	statement := &ast.JeffStatement{Token: p.currentToken}
@@ -174,6 +175,8 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	return statement
 }
 
+// Expressions as statements are valid in JPL. 
+// For instance "2 + 2;" is a valid line.
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 
 	statement := &ast.ExpressionStatement{Token: p.currentToken}

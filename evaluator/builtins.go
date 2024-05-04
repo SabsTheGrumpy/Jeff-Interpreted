@@ -28,7 +28,7 @@ var builtins = map[string]*object.Builtin {
 				fmt.Println(arg.Inspect())
 			}
 
-			return NULL
+			return &object.String{Value: ""}
 		},
 	},
 }

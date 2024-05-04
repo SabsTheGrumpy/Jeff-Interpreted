@@ -12,6 +12,7 @@ import (
 
 const PROMPT = ">>"
 
+// Start the REPL. Keeps state so inputs can reuse variables
 func Start(reader io.Reader, writer io.Writer) {
 	scanner := bufio.NewScanner(reader)
 	env := object.NewEnvironment()

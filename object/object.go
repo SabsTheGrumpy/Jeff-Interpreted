@@ -24,6 +24,8 @@ const (
 	BUILTIN_OBJ = "BUILTIN"
 )
 
+
+// Objects is the generic interface
 type Object interface {
 	Type() ObjectType
 	Inspect() string
@@ -68,6 +70,7 @@ func (n *Null) Type() ObjectType {
 	return NULL_OBJ
 }
 
+// Return statement object to store return value
 type Return struct {
 	Value Object
 }
@@ -94,7 +97,8 @@ func (e *ERROR) Type() ObjectType {
 	return ERROR_OBJ
 }
 
-
+// Environment stores local variables. Also contains an outer environment
+// to check if a desired identifier doesn't exist in the current one.
 type Environment struct {
 	store map[string]Object
 	outer *Environment
