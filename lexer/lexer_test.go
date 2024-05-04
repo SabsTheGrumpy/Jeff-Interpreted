@@ -94,9 +94,9 @@ if(x != 3)
 		{token.NOT_EQUALS, "!="},
 		{token.INT, "3"},
 		{token.RPAREN, ")"},
-		{token.EOF, ""},
 		{token.STRING, "foobar"},
 		{token.STRING, "foo bar"},
+		{token.EOF, ""},
 	}
 
 	lexer := New(input)
