@@ -6,6 +6,16 @@ Welcome to the Jeff programing language. This language was created based on the 
 
 ### Download
 
+To download and use the JPL, simply visit the [releases](https://github.com/SabsTheGrumpy/Jeff-Interpreted/releases) and select the correct release package for your local machine.
+
+For example, at the time of writing the latest release is 1.0.0. So for my windows machine running an x64 processor I would download the *1-0-0-windows-amd64.zip*
+
+In that zip contains the jeff.exe that can be run via the command line with 
+
+```
+jeff.exe
+```
+
 ### Writing your own "Hello World"
 
 The best place to start when learning JPL is where we always start. With a Hello World.
@@ -135,7 +145,28 @@ So when *runFunc* is called with 2,2 is then calls the func literal we pass in; 
 *runFunc* then adds x (2) to the result of *someFunc* (4) with the end value of 6
 
 
-### Running project
+### Using .jeff files
+On top of the REPL, JPL can also be run using .jeff files. Simply create a yourfile.jeff file in your favorite text editor. Then run that file passing it as an argument to the JPL.
+
+So for a windows installation of Jeff
+
+
+```
+jeff.exe yourfile.jeff
+```
+
+
+.jeff files can have any name but must end in .jeff for the interpreter to read them
+
+### Compiling the project
+
+You can additionally download the source and compile the JPL yourself. JPL is written in Go. The latest version of JPL is written in 1.22.2;
+
+So with a compatible Go installation
+
+1. Clone this repo
+2. Navigate to the project
+3. Run `go build -o jeff`
 
 
 ### Directories
@@ -145,14 +176,3 @@ So when *runFunc* is called with 2,2 is then calls the func literal we pass in; 
 - [Parser](parser/README.md)
 - [AST](ast/README.md)
 - [REPL](repl/README.md)
-
-
-
-### Remaining Work
-
-- Allow interpreter to read files
-- Allow interpreter to print out AST of file
-- Add directory documentation
-- Add arrays
-- Add hashes
-- Write a compiled version of JPL
