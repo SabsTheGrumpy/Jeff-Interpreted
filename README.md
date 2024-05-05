@@ -13,7 +13,7 @@ For example, at the time of writing the latest release is 1.0.0. So for my windo
 In that zip contains the jeff.exe that can be run via the command line with 
 
 ```
-jeff.exe
+./jeff.exe
 ```
 
 ### Writing your own "Hello World"
