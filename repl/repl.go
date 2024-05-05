@@ -8,6 +8,7 @@ import (
 	"jeff/lexer"
 	"jeff/object"
 	"jeff/parser"
+	
 )
 
 const PROMPT = ">>"
@@ -33,7 +34,7 @@ func Start(reader io.Reader, writer io.Writer) {
 		program := parser.ParseProgram()
 
 		if len(parser.Errors()) != 0 {
-			printParserErrors(writer, parser.Errors())
+			PrintParserErrors(writer, parser.Errors())
 			continue
 		}
 
@@ -45,8 +46,9 @@ func Start(reader io.Reader, writer io.Writer) {
 	}
 }
 
-func printParserErrors(out io.Writer, errors []string) {
+func PrintParserErrors(out io.Writer, errors []string) {
 	for _, msg := range errors {
 		io.WriteString(out, msg+"\n")
 	}
 }
+
