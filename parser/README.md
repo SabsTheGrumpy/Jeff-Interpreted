@@ -1,3 +1,5 @@
+#### Previous Topic: [Lexer](../lexer/README.md)
+
 ### The Parser
 
 The parser is what runs the [lexer](../lexer/README.md). It takes the tokens created by the lexer and converts them into an Abstract Syntax Tree (AST). The AST is just a way to represent the logic of the program in an a way that can be easily evaluated... but we will get to evaluation later. 
@@ -63,3 +65,4 @@ node: JEFFS
                         |- Statement: IntegerLiteral{2}
 ```
 
+#### Next Topic: [Evaluator](../evaluator/README.md)
