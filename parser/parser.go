@@ -175,7 +175,7 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	return statement
 }
 
-// Expressions as statements are valid in JPL. 
+// Expressions as statements are valid in JPL.
 // For instance "2 + 2;" is a valid line.
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 

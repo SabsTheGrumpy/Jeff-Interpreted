@@ -34,7 +34,7 @@ const (
 	IF       = "IF"
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
-	STRING = "STRING"
+	STRING   = "STRING"
 )
 
 type TokenType string
@@ -48,7 +48,7 @@ type Token struct {
 var keywords = map[string]TokenType{
 	"fn":     FUNCTION,
 	"jeff's": JEFFS,
-	"right":   RIGHT,
+	"right":  RIGHT,
 	"huang":  HUANG,
 	"if":     IF,
 	"else":   ELSE,

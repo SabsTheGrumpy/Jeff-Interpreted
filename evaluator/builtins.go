@@ -5,9 +5,8 @@ import (
 	"jeff/object"
 )
 
-
 // Buit in functions for the JPL
-var builtins = map[string]*object.Builtin {
+var builtins = map[string]*object.Builtin{
 	"len": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
@@ -24,7 +23,7 @@ var builtins = map[string]*object.Builtin {
 	},
 	"jeffsays": {
 		Fn: func(args ...object.Object) object.Object {
-			for _, arg := range  args {
+			for _, arg := range args {
 				fmt.Println(arg.Inspect())
 			}
 

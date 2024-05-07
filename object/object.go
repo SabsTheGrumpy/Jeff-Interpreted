@@ -9,21 +9,18 @@ import (
 
 // Internal representations of data in our interpreter
 
-
 type ObjectType string
 
-
 const (
-	INTEGER_OBJ = "INTEGER"
-	BOOLEAN_OBJ = "BOOLEAN"
-	NULL_OBJ = "NULL"
-	RETURN_OBJ = "RETURN"
-	ERROR_OBJ = "ERROR"
+	INTEGER_OBJ  = "INTEGER"
+	BOOLEAN_OBJ  = "BOOLEAN"
+	NULL_OBJ     = "NULL"
+	RETURN_OBJ   = "RETURN"
+	ERROR_OBJ    = "ERROR"
 	FUNCTION_OBJ = "FUNCTION"
-	STRING_OBJ = "STRING"
-	BUILTIN_OBJ = "BUILTIN"
+	STRING_OBJ   = "STRING"
+	BUILTIN_OBJ  = "BUILTIN"
 )
-
 
 // Objects is the generic interface
 type Object interface {
@@ -35,14 +32,13 @@ type Integer struct {
 	Value int64
 }
 
-func (i *Integer) Inspect() string  {
+func (i *Integer) Inspect() string {
 	return fmt.Sprintf("%d", i.Value)
 }
 
 func (i *Integer) Type() ObjectType {
 	return INTEGER_OBJ
 }
-
 
 type Boolean struct {
 	Value bool
@@ -60,9 +56,9 @@ func (b *Boolean) Type() ObjectType {
 	return BOOLEAN_OBJ
 }
 
-type Null struct {}
+type Null struct{}
 
-func (n *Null)  Inspect() string {
+func (n *Null) Inspect() string {
 	return "null"
 }
 
@@ -83,11 +79,9 @@ func (r *Return) Type() ObjectType {
 	return RETURN_OBJ
 }
 
-
 type ERROR struct {
 	Message string
 }
-
 
 func (e *ERROR) Inspect() string {
 	return "ERROR: " + e.Message
@@ -128,13 +122,11 @@ func (e *Environment) Set(name string, val Object) Object {
 	return val
 }
 
-
 type Function struct {
 	Parameters []*ast.Indentifier
-	Body *ast.BlockStatement
-	Env *Environment
+	Body       *ast.BlockStatement
+	Env        *Environment
 }
-
 
 func (f *Function) Type() ObjectType {
 	return FUNCTION_OBJ
@@ -159,7 +151,6 @@ func (f *Function) Inspect() string {
 	return out.String()
 }
 
-
 type String struct {
 	Value string
 }
@@ -172,18 +163,15 @@ func (s *String) Inspect() string {
 	return s.Value
 }
 
+type BuiltInFunction func(args ...Object) Object
 
-type BuiltInFunction func (args ...Object) Object
-
-
-type Builtin struct  {
+type Builtin struct {
 	Fn BuiltInFunction
 }
 
 func (b *Builtin) Type() ObjectType {
 	return BUILTIN_OBJ
 }
-
 
 func (b *Builtin) Inspect() string {
 	return "builtin function"

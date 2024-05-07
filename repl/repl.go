@@ -8,7 +8,6 @@ import (
 	"jeff/lexer"
 	"jeff/object"
 	"jeff/parser"
-	
 )
 
 const PROMPT = ">>"
@@ -51,4 +50,3 @@ func PrintParserErrors(out io.Writer, errors []string) {
 		io.WriteString(out, msg+"\n")
 	}
 }
-

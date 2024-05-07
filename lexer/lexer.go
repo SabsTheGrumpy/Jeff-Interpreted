@@ -71,7 +71,7 @@ func (l *Lexer) NextToken() token.Token {
 			currentChar := l.character
 			l.readChar()
 			t = token.Token{Type: token.EQUALS, Literal: string(currentChar) + string(l.character)}
-		} 
+		}
 		// else {
 		// 	t = newToken(token.ASSIGN, l.character)
 		// }

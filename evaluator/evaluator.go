@@ -9,7 +9,7 @@ import (
 // Dont need separate instances of booleans and null. True will always be true
 var (
 	NULL  = &object.Null{}
-	RIGHT  = &object.Boolean{Value: true}
+	RIGHT = &object.Boolean{Value: true}
 	HUANG = &object.Boolean{Value: false}
 )
 

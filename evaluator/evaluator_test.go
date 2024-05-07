@@ -9,7 +9,7 @@ import (
 
 func TestEvalIntegerExpression(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected int64
 	}{
 		{
@@ -54,14 +54,13 @@ func TestEvalIntegerExpression(t *testing.T) {
 
 	for _, testCase := range tests {
 		evaluated := testEval(testCase.input)
-		testIntegerObject(t,evaluated,testCase.expected)
+		testIntegerObject(t, evaluated, testCase.expected)
 	}
 }
 
-
 func TestEvalBooleanExpression(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected bool
 	}{
 		{
@@ -140,11 +139,7 @@ func TestEvalBooleanExpression(t *testing.T) {
 			"(1 > 4) == huang",
 			true,
 		},
-
-		
-
 	}
-
 
 	for _, testCase := range tests {
 		evaluated := testEval(testCase.input)
@@ -152,11 +147,10 @@ func TestEvalBooleanExpression(t *testing.T) {
 	}
 }
 
-
 func TestBangOperator(t *testing.T) {
 
 	tests := []struct {
-		input string
+		input    string
 		expected bool
 	}{
 		{
@@ -185,7 +179,7 @@ func TestBangOperator(t *testing.T) {
 
 func TestIfElseExpression(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected interface{}
 	}{
 		{"if (right) { 10 }", 10},
@@ -209,7 +203,7 @@ func TestIfElseExpression(t *testing.T) {
 func TestReturnStatements(t *testing.T) {
 
 	tests := []struct {
-		input string
+		input    string
 		expected int64
 	}{
 		{"return 10;", 10},
@@ -226,10 +220,9 @@ func TestReturnStatements(t *testing.T) {
 
 }
 
-
 func TestErrorHandling(t *testing.T) {
 	tests := []struct {
-		input string
+		input           string
 		expectedMessage string
 	}{
 		{"5 + right", "type mismatch: INTEGER + BOOLEAN"},
@@ -239,8 +232,6 @@ func TestErrorHandling(t *testing.T) {
 		{"5; right + huang; 5;", "unknown operator: BOOLEAN + BOOLEAN"},
 		{"foobar", "identifier not found: foobar"},
 	}
-
-
 
 	for _, testCase := range tests {
 		evaluated := testEval(testCase.input)
@@ -255,14 +246,13 @@ func TestErrorHandling(t *testing.T) {
 			t.Errorf("Unexpected message. Expected %s but got %s", testCase.expectedMessage, errObj.Message)
 		}
 
-
 	}
 }
 
 func TestJeffStatements(t *testing.T) {
 
-	tests := []struct{
-		input string
+	tests := []struct {
+		input    string
 		expected int64
 	}{
 		{"jeff's x is 5; x", 5},
@@ -276,10 +266,8 @@ func TestJeffStatements(t *testing.T) {
 
 }
 
-
 func TestFunctionObject(t *testing.T) {
 	input := "fn(x) {  x + 2 ; };"
-
 
 	evaluated := testEval(input)
 	fn, ok := evaluated.(*object.Function)
@@ -287,7 +275,6 @@ func TestFunctionObject(t *testing.T) {
 	if !ok {
 		t.Fatalf("Evaluated %T(%+v) could not be converted to function", evaluated, evaluated)
 	}
-
 
 	if len(fn.Parameters) != 1 {
 		t.Fatalf("Expected lengh of parameters to be 1, but got %d", len(fn.Parameters))
@@ -304,10 +291,9 @@ func TestFunctionObject(t *testing.T) {
 	}
 }
 
-
 func TestFunctionApplication(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected int64
 	}{
 		{"jeff's identity is fn(x) { x; }; identity(5);", 5},
@@ -351,7 +337,6 @@ func TestStringConcatenation(t *testing.T) {
 	}
 }
 
-
 func TestBuiltinFunctions(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -387,10 +372,6 @@ func TestBuiltinFunctions(t *testing.T) {
 	}
 }
 
-
-
-
-
 func testNullObject(t *testing.T, obj object.Object) bool {
 
 	if obj != NULL {
@@ -401,10 +382,9 @@ func testNullObject(t *testing.T, obj object.Object) bool {
 
 }
 
-
 func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
 	result, ok := obj.(*object.Boolean)
-	if !ok  {
+	if !ok {
 		t.Errorf("object %T (%+v) is not boolean", obj, obj)
 		return false
 	}
@@ -417,7 +397,6 @@ func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
 	return true
 }
 
-
 func testEval(input string) object.Object {
 	lexer := lexer.New(input)
 	parser := parser.New(lexer)
@@ -429,7 +408,7 @@ func testEval(input string) object.Object {
 
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	result, ok := obj.(*object.Integer)
-	if !ok  {
+	if !ok {
 		t.Errorf("object %T (%+v) is not integer", obj, obj)
 		return false
 	}
