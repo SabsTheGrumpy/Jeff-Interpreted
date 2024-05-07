@@ -169,10 +169,8 @@ So with a compatible Go installation
 3. Run `go build -o jeff`
 
 
-### Directories
+### How the Interpreter Works
 
-- [Token](token/README.md)
-- [Lexer](lexer/README.md)
-- [Parser](parser/README.md)
-- [AST](ast/README.md)
-- [REPL](repl/README.md)
+1. [The Lexer](lexer/README.md)
+2. [The Parser](parser/README.md)
+3. [The Evaluator](evaluator/README.md)
